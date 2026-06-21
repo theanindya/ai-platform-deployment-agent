@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Platform Deployment Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-panel main-header">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h1>AI Platform Deployment</h1>
+            </div>
+            <div class="badge-status">Agent Status: <span class="status-indicator online"></span> Online</div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Left Column: Form -->
+            <section class="glass-panel form-section">
+                <h2>New Deployment Request</h2>
+                <form id="deploymentForm">
+                    <div class="form-group">
+                        <label for="model_name">Model Name</label>
+                        <select id="model_name" name="model_name" required>
+                            <option value="">-- Select a model --</option>
+                            <option value="fraud-detection-v2">fraud-detection-v2 (XGBoost · Accuracy 97.8%)</option>
+                            <option value="fraud-detection-v1">fraud-detection-v1 (XGBoost · Accuracy 96.5%)</option>
+                            <option value="customer-churn-v3">customer-churn-v3 (Neural Network · Accuracy 81.2%)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="model_version">Model Version</label>
+                            <select id="model_version" name="model_version" required>
+                                <option value="">-- Select model first --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="environment">Environment</label>
+                            <select id="environment" name="environment">
+                                <option value="dev">Development</option>
+                                <option value="test">Testing</option>
+                                <option value="prod">Production</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="container_image">Container Image URI</label>
+                        <select id="container_image" name="container_image" required>
+                            <option value="">-- Select model first --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="target_cluster">Target Cluster</label>
+                            <select id="target_cluster" name="target_cluster">
+                                <option value="k8s-cluster-prod-1">k8s-cluster-prod-1 (Production)</option>
+                                <option value="k8s-cluster-staging-1">k8s-cluster-staging-1 (Staging)</option>
+                                <option value="k8s-cluster-dev">k8s-cluster-dev (Development)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="namespace">Namespace</label>
+                            <select id="namespace" name="namespace">
+                                <option value="finance-models">finance-models</option>
+                                <option value="marketing-models">marketing-models</option>
+                                <option value="ml-serving">ml-serving</option>
+                                <option value="ml-dev">ml-dev</option>
+                                <option value="default">default</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cpu_request">CPU Request</label>
+                            <select id="cpu_request" name="cpu_request">
+                                <option value="250m">250m (0.25 cores)</option>
+                                <option value="500m" selected>500m (0.5 cores)</option>
+                                <option value="1.0">1.0 (1 core)</option>
+                                <option value="2.0">2.0 (2 cores)</option>
+                                <option value="4.0">4.0 (4 cores)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="memory_request">Memory Request</label>
+                            <select id="memory_request" name="memory_request">
+                                <option value="256Mi">256Mi</option>
+                                <option value="512Mi" selected>512Mi</option>
+                                <option value="1Gi">1Gi</option>
+                                <option value="4Gi">4Gi</option>
+                                <option value="8Gi">8Gi</option>
+                                <option value="16Gi">16Gi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gpu_request">GPU Request</label>
+                            <select id="gpu_request" name="gpu_request">
+                                <option value="0" selected>0 (None)</option>
+                                <option value="1">1 GPU</option>
+                                <option value="2">2 GPUs</option>
+                                <option value="4">4 GPUs</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row checkbox-row">
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="monitoring_enabled" name="monitoring_enabled">
+                            <label for="monitoring_enabled">Enable Monitoring</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="rollback_strategy">Rollback Strategy</label>
+                            <select id="rollback_strategy" name="rollback_strategy">
+                                <option value="none">None</option>
+                                <option value="rolling-update">Rolling Update</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="primary-btn">
+                        <span>Run Agent Review</span>
+                        <div class="loader hidden" id="submitLoader"></div>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Column: Results & Timeline -->
+            <section class="results-section">
+                <!-- Verdict & Risk -->
+                <div class="glass-panel summary-panel hidden" id="summaryPanel">
+                    <div class="verdict-container">
+                        <h3>Final Verdict</h3>
+                        <div id="verdictBadge" class="badge large">PENDING</div>
+                        <p id="verdictReason" class="reason-text"></p>
+                    </div>
+                    
+                    <div class="risk-container">
+                        <h3>Risk Assessment</h3>
+                        <div class="risk-gauge">
+                            <svg viewBox="0 0 36 36" class="circular-chart">
+                                <path class="circle-bg"
+                                    d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                />
+                                <path class="circle" id="riskPath"
+                                    stroke-dasharray="0, 100"
+                                    d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                />
+                                <text x="18" y="20.35" class="percentage" id="riskScoreText">0</text>
+                            </svg>
+                            <div id="riskLevelBadge" class="badge small">UNKNOWN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Violations Table -->
+                <div class="glass-panel violations-panel hidden" id="violationsPanel">
+                    <h3>Policy Violations & Warnings</h3>
+                    <div class="table-container">
+                        <table id="violationsTable">
+                            <thead>
+                                <tr>
+                                    <th>Severity</th>
+                                    <th>Rule</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Rows generated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Agent Review Timeline -->
+                <div class="glass-panel timeline-panel hidden" id="timelinePanel">
+                    <h3>Agent Review Timeline</h3>
+                    <ul class="timeline" id="timelineList">
+                        <!-- Timeline items generated dynamically -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

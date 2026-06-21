@@ -1,0 +1,28 @@
+{
+  "policies": {
+    "dev": {
+      "min_f1_score": 0.70,
+      "max_allowed_cve_severity": "HIGH",
+      "allowed_registries": ["gcr.io/enterprise-platform/", "docker.io/library/"],
+      "require_monitoring": false,
+      "require_rollback": false,
+      "max_data_drift": 0.20
+    },
+    "test": {
+      "min_f1_score": 0.80,
+      "max_allowed_cve_severity": "MEDIUM",
+      "allowed_registries": ["gcr.io/enterprise-platform/"],
+      "require_monitoring": true,
+      "require_rollback": true,
+      "max_data_drift": 0.10
+    },
+    "prod": {
+      "min_f1_score": 0.90,
+      "max_allowed_cve_severity": "LOW",
+      "allowed_registries": ["gcr.io/enterprise-platform/"],
+      "require_monitoring": true,
+      "require_rollback": true,
+      "max_data_drift": 0.05
+    }
+  }
+}

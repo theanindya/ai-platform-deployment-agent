@@ -1,0 +1,58 @@
+{
+  "clusters": {
+    "k8s-cluster-dev": {
+      "cluster_name": "k8s-cluster-dev",
+      "health_status": "HEALTHY",
+      "cpu": {
+        "total_cores": 16.0,
+        "allocated_cores": 8.5
+      },
+      "memory": {
+        "total_gb": 64.0,
+        "allocated_gb": 32.0
+      },
+      "gpu": {
+        "total_cards": 2,
+        "allocated_cards": 1
+      },
+      "monitoring_installed": true,
+      "rollback_supported": true
+    },
+    "k8s-cluster-prod-1": {
+      "cluster_name": "k8s-cluster-prod-1",
+      "health_status": "HEALTHY",
+      "cpu": {
+        "total_cores": 64.0,
+        "allocated_cores": 58.0
+      },
+      "memory": {
+        "total_gb": 256.0,
+        "allocated_gb": 240.0
+      },
+      "gpu": {
+        "total_cards": 8,
+        "allocated_cards": 7
+      },
+      "monitoring_installed": true,
+      "rollback_supported": true
+    },
+    "k8s-cluster-test-1": {
+      "cluster_name": "k8s-cluster-test-1",
+      "health_status": "DEGRADED",
+      "cpu": {
+        "total_cores": 16.0,
+        "allocated_cores": 15.5
+      },
+      "memory": {
+        "total_gb": 64.0,
+        "allocated_gb": 60.0
+      },
+      "gpu": {
+        "total_cards": 0,
+        "allocated_cards": 0
+      },
+      "monitoring_installed": false,
+      "rollback_supported": false
+    }
+  }
+}

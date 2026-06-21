@@ -1,0 +1,37 @@
+{
+  "models": {
+    "fraud-detection-v1": {
+      "model_id": "fraud-detection-v1",
+      "model_type": "xgboost",
+      "metrics": {
+        "accuracy": 0.965,
+        "f1_score": 0.942,
+        "latency_p95_ms": 12.5
+      },
+      "data_drift": 0.02,
+      "bias_detected": false
+    },
+    "fraud-detection-v2": {
+      "model_id": "fraud-detection-v2",
+      "model_type": "xgboost",
+      "metrics": {
+        "accuracy": 0.978,
+        "f1_score": 0.961,
+        "latency_p95_ms": 14.2
+      },
+      "data_drift": 0.01,
+      "bias_detected": false
+    },
+    "customer-churn-v3": {
+      "model_id": "customer-churn-v3",
+      "model_type": "neural-network",
+      "metrics": {
+        "accuracy": 0.812,
+        "f1_score": 0.724,
+        "latency_p95_ms": 85.0
+      },
+      "data_drift": 0.15,
+      "bias_detected": true
+    }
+  }
+}

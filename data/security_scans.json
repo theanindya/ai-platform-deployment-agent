@@ -1,0 +1,44 @@
+{
+  "images": {
+    "gcr.io/enterprise-platform/fraud-detection:v1": {
+      "image_uri": "gcr.io/enterprise-platform/fraud-detection:v1",
+      "scan_status": "COMPLETED",
+      "vulnerabilities": [
+        {
+          "cve_id": "CVE-2023-1234",
+          "severity": "LOW",
+          "package": "openssl",
+          "fixed_version": "3.0.8-r1"
+        }
+      ]
+    },
+    "gcr.io/enterprise-platform/fraud-detection:v2": {
+      "image_uri": "gcr.io/enterprise-platform/fraud-detection:v2",
+      "scan_status": "COMPLETED",
+      "vulnerabilities": []
+    },
+    "gcr.io/enterprise-platform/customer-churn:v3": {
+      "image_uri": "gcr.io/enterprise-platform/customer-churn:v3",
+      "scan_status": "COMPLETED",
+      "vulnerabilities": [
+        {
+          "cve_id": "CVE-2024-5678",
+          "severity": "CRITICAL",
+          "package": "glibc",
+          "fixed_version": "2.35-r5"
+        },
+        {
+          "cve_id": "CVE-2024-9999",
+          "severity": "HIGH",
+          "package": "python-pip",
+          "fixed_version": "none"
+        }
+      ]
+    },
+    "docker.io/untrusted-source/shadow-model:v1": {
+      "image_uri": "docker.io/untrusted-source/shadow-model:v1",
+      "scan_status": "FAILED",
+      "vulnerabilities": []
+    }
+  }
+}

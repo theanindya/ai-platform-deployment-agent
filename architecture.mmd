@@ -1,0 +1,63 @@
+graph TD
+    %% User Interaction
+    User((User)) -->|Deployment Request| Gateway[FastAPI Gateway]
+    Gateway -->|Initiate Workflow| Coordinator[DeploymentCoordinatorAgent]
+
+    %% Orchestrator
+    subgraph ADK Multi-Agent System
+        Coordinator
+        
+        %% Agents
+        Coordinator -->|1. Check Security| Security[SecurityComplianceAgent]
+        Coordinator -->|2. Check Quality| Quality[ModelQualityAgent]
+        Coordinator -->|3. Check Infrastructure| Infra[InfrastructureReadinessAgent]
+        
+        Security -->|Findings| Risk[RiskAssessmentAgent]
+        Quality -->|Findings| Risk
+        Infra -->|Findings| Risk
+        
+        Risk -->|Risk Score & Level| Policy[PolicyDecisionAgent]
+        Policy -->|Final Verdict| Coordinator
+    end
+
+    %% MCP Server
+    subgraph Mock MCP Server
+        MCP[MCP Server Interface]
+        Tools[[MCP Tools]]
+        MCP --- Tools
+    end
+
+    %% Data Sources
+    subgraph Synthetic Enterprise Data Sources
+        Data_Sec[(Security Policies & CVEs)]
+        Data_Met[(Model Metrics)]
+        Data_Clus[(Cluster Status)]
+    end
+
+    %% Agent to MCP connections
+    Security -.->|get_container_vulnerabilities| MCP
+    Quality -.->|get_model_metrics| MCP
+    Infra -.->|get_cluster_status| MCP
+    Policy -.->|get_policy_rules| MCP
+
+    %% MCP to Data
+    Tools -.-> Data_Sec
+    Tools -.-> Data_Met
+    Tools -.-> Data_Clus
+
+    %% Response
+    Coordinator -->|Return Response| Gateway
+    Gateway -->|Verdict & Details| User
+
+    %% Styling
+    classDef agent fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef orchestrator fill:#bbdefb,stroke:#0d47a1,stroke-width:2px,font-weight:bold;
+    classDef gateway fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef server fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef data fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+
+    class Security,Quality,Infra,Risk,Policy agent;
+    class Coordinator orchestrator;
+    class Gateway gateway;
+    class MCP,Tools server;
+    class Data_Sec,Data_Met,Data_Clus data;

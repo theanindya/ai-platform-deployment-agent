@@ -1,0 +1,15 @@
+[project]
+name = "ai-platform-deployment-agent"
+version = "0.1.0"
+description = "AI Platform Deployment Agent with ADK, FastAPI, and MCP simulation"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "pytest>=7.0",
+    "pytest-asyncio",
+    "httpx>=0.24.0",
+]

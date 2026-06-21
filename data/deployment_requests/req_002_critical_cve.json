@@ -1,0 +1,14 @@
+{
+  "request_id": "req_002_critical_cve",
+  "model_name": "customer-churn-v3",
+  "model_version": "3.0.0",
+  "container_image": "gcr.io/enterprise-platform/customer-churn:v3",
+  "target_cluster": "k8s-cluster-prod-1",
+  "environment": "prod",
+  "namespace": "marketing-models",
+  "cpu_request": "2.0",
+  "memory_request": "8Gi",
+  "gpu_request": "0",
+  "monitoring_enabled": true,
+  "rollback_strategy": "rolling-update"
+}
