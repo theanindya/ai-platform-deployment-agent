@@ -240,7 +240,7 @@ capstone project/
 
 ---
 
-## Kaggle Capstone Requirements
+##  Requirements
 
 | Requirement | Implementation |
 |---|---|
